@@ -21,4 +21,17 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
+
+  implicit lazy val arbitraryYourDetails: Arbitrary[YourDetails] =
+    Arbitrary {
+      for {
+        field1 <- arbitrary[String]
+        field2 <- arbitrary[String]
+      } yield YourDetails(field1, field2)
+    }
+
+  implicit lazy val arbitraryLocation: Arbitrary[Location] =
+    Arbitrary {
+      Gen.oneOf(Location.values.toSeq)
+    }
 }

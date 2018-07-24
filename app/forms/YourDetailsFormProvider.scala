@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package generators
+package forms
 
-import org.scalacheck.Arbitrary
-import pages._
+import javax.inject.Inject
 
-trait PageGenerators {
+import forms.mappings.Mappings
+import play.api.data.Form
+import play.api.data.Forms._
+import models.YourDetails
 
-  implicit lazy val arbitraryYourDetailsPage: Arbitrary[YourDetailsPage.type] =
-    Arbitrary(YourDetailsPage)
+class YourDetailsFormProvider @Inject() extends Mappings {
 
-  implicit lazy val arbitraryLocationPage: Arbitrary[LocationPage.type] =
-    Arbitrary(LocationPage)
-
-  implicit lazy val arbitraryChildAgedTwoPage: Arbitrary[ChildAgedTwoPage.type] =
-    Arbitrary(ChildAgedTwoPage)
-
-  implicit lazy val arbitraryChildAgedThreeOrFourPage: Arbitrary[ChildAgedThreeOrFourPage.type] =
-    Arbitrary(ChildAgedThreeOrFourPage)
-}
+   def apply(): Form[YourDetails] = Form(
+     mapping(
+      "field1" -> text("yourDetails.error.field1.required")
+        .verifying(maxLength(100, "yourDetails.error.field1.length")),
+      "field2" -> text("yourDetails.error.field2.required")
+        .verifying(maxLength(100, "yourDetails.error.field2.length"))
+    )(YourDetails.apply)(YourDetails.unapply)
+   )
+ }

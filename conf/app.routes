@@ -11,3 +11,23 @@ GET        /this-service-has-been-reset                 controllers.SessionExpir
 GET        /check-your-answers                          controllers.CheckYourAnswersController.onPageLoad
 
 GET        /unauthorised                                controllers.UnauthorisedController.onPageLoad
+
+GET        /childAgedThreeOrFour                        controllers.ChildAgedThreeOrFourController.onPageLoad(mode: Mode = NormalMode)
+POST       /childAgedThreeOrFour                        controllers.ChildAgedThreeOrFourController.onSubmit(mode: Mode = NormalMode)
+GET        /changeChildAgedThreeOrFour                  controllers.ChildAgedThreeOrFourController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeChildAgedThreeOrFour                  controllers.ChildAgedThreeOrFourController.onSubmit(mode: Mode = CheckMode)
+
+GET        /childAgedTwo                        controllers.ChildAgedTwoController.onPageLoad(mode: Mode = NormalMode)
+POST       /childAgedTwo                        controllers.ChildAgedTwoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeChildAgedTwo                  controllers.ChildAgedTwoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeChildAgedTwo                  controllers.ChildAgedTwoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /location               controllers.LocationController.onPageLoad(mode: Mode = NormalMode)
+POST       /location               controllers.LocationController.onSubmit(mode: Mode = NormalMode)
+GET        /changeLocation                  controllers.LocationController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeLocation                  controllers.LocationController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourDetails                        controllers.YourDetailsController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourDetails                        controllers.YourDetailsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourDetails                  controllers.YourDetailsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourDetails                  controllers.YourDetailsController.onSubmit(mode: Mode = CheckMode)

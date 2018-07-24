@@ -14,22 +14,32 @@
  * limitations under the License.
  */
 
-package generators
+package forms
 
-import org.scalacheck.Arbitrary
-import pages._
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-trait PageGenerators {
+class ChildAgedTwoFormProviderSpec extends BooleanFieldBehaviours {
 
-  implicit lazy val arbitraryYourDetailsPage: Arbitrary[YourDetailsPage.type] =
-    Arbitrary(YourDetailsPage)
+  val requiredKey = "childAgedTwo.error.required"
+  val invalidKey = "error.boolean"
 
-  implicit lazy val arbitraryLocationPage: Arbitrary[LocationPage.type] =
-    Arbitrary(LocationPage)
+  val form = new ChildAgedTwoFormProvider()()
 
-  implicit lazy val arbitraryChildAgedTwoPage: Arbitrary[ChildAgedTwoPage.type] =
-    Arbitrary(ChildAgedTwoPage)
+  ".value" must {
 
-  implicit lazy val arbitraryChildAgedThreeOrFourPage: Arbitrary[ChildAgedThreeOrFourPage.type] =
-    Arbitrary(ChildAgedThreeOrFourPage)
+    val fieldName = "value"
+
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
+    )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }

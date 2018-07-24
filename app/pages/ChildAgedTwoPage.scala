@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-package generators
+package pages
 
-import org.scalacheck.Arbitrary
-import pages._
+import controllers.routes
+import play.api.mvc.Call
+import utils.UserAnswers
 
-trait PageGenerators {
+case object ChildAgedTwoPage extends QuestionPage[Boolean] with DefaultCheckModeRouting[Boolean] {
 
-  implicit lazy val arbitraryYourDetailsPage: Arbitrary[YourDetailsPage.type] =
-    Arbitrary(YourDetailsPage)
+  override def toString: String = "childAgedTwo"
 
-  implicit lazy val arbitraryLocationPage: Arbitrary[LocationPage.type] =
-    Arbitrary(LocationPage)
-
-  implicit lazy val arbitraryChildAgedTwoPage: Arbitrary[ChildAgedTwoPage.type] =
-    Arbitrary(ChildAgedTwoPage)
-
-  implicit lazy val arbitraryChildAgedThreeOrFourPage: Arbitrary[ChildAgedThreeOrFourPage.type] =
-    Arbitrary(ChildAgedThreeOrFourPage)
+  override def normalModeRoute(answers: UserAnswers): Call =
+    routes.IndexController.onPageLoad()
 }

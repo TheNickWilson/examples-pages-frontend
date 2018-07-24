@@ -14,22 +14,32 @@
  * limitations under the License.
  */
 
-package generators
+package forms
 
-import org.scalacheck.Arbitrary
-import pages._
+import forms.behaviours.OptionFieldBehaviours
+import models.Location
+import play.api.data.FormError
 
-trait PageGenerators {
+class LocationFormProviderSpec extends OptionFieldBehaviours {
 
-  implicit lazy val arbitraryYourDetailsPage: Arbitrary[YourDetailsPage.type] =
-    Arbitrary(YourDetailsPage)
+  val form = new LocationFormProvider()()
 
-  implicit lazy val arbitraryLocationPage: Arbitrary[LocationPage.type] =
-    Arbitrary(LocationPage)
+  ".value" must {
 
-  implicit lazy val arbitraryChildAgedTwoPage: Arbitrary[ChildAgedTwoPage.type] =
-    Arbitrary(ChildAgedTwoPage)
+    val fieldName = "value"
+    val requiredKey = "location.error.required"
 
-  implicit lazy val arbitraryChildAgedThreeOrFourPage: Arbitrary[ChildAgedThreeOrFourPage.type] =
-    Arbitrary(ChildAgedThreeOrFourPage)
+    behave like optionsField[Location](
+      form,
+      fieldName,
+      validValues  = Location.values,
+      invalidError = FormError(fieldName, "error.invalid")
+    )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }

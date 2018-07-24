@@ -14,22 +14,18 @@
  * limitations under the License.
  */
 
-package generators
+package forms
 
-import org.scalacheck.Arbitrary
-import pages._
+import javax.inject.Inject
 
-trait PageGenerators {
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.Location
 
-  implicit lazy val arbitraryYourDetailsPage: Arbitrary[YourDetailsPage.type] =
-    Arbitrary(YourDetailsPage)
+class LocationFormProvider @Inject() extends FormErrorHelper with Mappings {
 
-  implicit lazy val arbitraryLocationPage: Arbitrary[LocationPage.type] =
-    Arbitrary(LocationPage)
-
-  implicit lazy val arbitraryChildAgedTwoPage: Arbitrary[ChildAgedTwoPage.type] =
-    Arbitrary(ChildAgedTwoPage)
-
-  implicit lazy val arbitraryChildAgedThreeOrFourPage: Arbitrary[ChildAgedThreeOrFourPage.type] =
-    Arbitrary(ChildAgedThreeOrFourPage)
+  def apply(): Form[Location] =
+    Form(
+      "value" -> enumerable[Location]("location.error.required")
+    )
 }

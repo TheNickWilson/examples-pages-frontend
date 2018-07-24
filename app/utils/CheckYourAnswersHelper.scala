@@ -22,4 +22,20 @@ import pages._
 import viewmodels.{AnswerRow, RepeaterAnswerRow, RepeaterAnswerSection}
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
+
+  def yourDetails: Option[AnswerRow] = userAnswers.get(YourDetailsPage) map {
+    x => AnswerRow("yourDetails.checkYourAnswersLabel", s"${x.field1} ${x.field2}", false, routes.YourDetailsController.onPageLoad(CheckMode).url)
+  }
+
+  def location: Option[AnswerRow] = userAnswers.get(LocationPage) map {
+    x => AnswerRow("location.checkYourAnswersLabel", s"location.$x", true, routes.LocationController.onPageLoad(CheckMode).url)
+  }
+
+  def childAgedTwo: Option[AnswerRow] = userAnswers.get(ChildAgedTwoPage) map {
+    x => AnswerRow("childAgedTwo.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildAgedTwoController.onPageLoad(CheckMode).url)
+  }
+
+  def childAgedThreeOrFour: Option[AnswerRow] = userAnswers.get(ChildAgedThreeOrFourPage) map {
+    x => AnswerRow("childAgedThreeOrFour.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildAgedThreeOrFourController.onPageLoad(CheckMode).url)
+  }
 }

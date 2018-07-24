@@ -14,22 +14,12 @@
  * limitations under the License.
  */
 
-package generators
+package models
 
-import org.scalacheck.Arbitrary
-import pages._
+import play.api.libs.json._
 
-trait PageGenerators {
+case class YourDetails (field1: String, field2: String)
 
-  implicit lazy val arbitraryYourDetailsPage: Arbitrary[YourDetailsPage.type] =
-    Arbitrary(YourDetailsPage)
-
-  implicit lazy val arbitraryLocationPage: Arbitrary[LocationPage.type] =
-    Arbitrary(LocationPage)
-
-  implicit lazy val arbitraryChildAgedTwoPage: Arbitrary[ChildAgedTwoPage.type] =
-    Arbitrary(ChildAgedTwoPage)
-
-  implicit lazy val arbitraryChildAgedThreeOrFourPage: Arbitrary[ChildAgedThreeOrFourPage.type] =
-    Arbitrary(ChildAgedThreeOrFourPage)
+object YourDetails {
+  implicit val format = Json.format[YourDetails]
 }

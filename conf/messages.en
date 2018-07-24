@@ -43,3 +43,30 @@ site.textarea.char_limit = (Limit is {0} characters)
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
+
+childAgedThreeOrFour.title = childAgedThreeOrFour
+childAgedThreeOrFour.heading = childAgedThreeOrFour
+childAgedThreeOrFour.checkYourAnswersLabel = childAgedThreeOrFour
+childAgedThreeOrFour.error.required = Select yes if childAgedThreeOrFour
+
+childAgedTwo.title = childAgedTwo
+childAgedTwo.heading = childAgedTwo
+childAgedTwo.checkYourAnswersLabel = childAgedTwo
+childAgedTwo.error.required = Select yes if childAgedTwo
+
+location.title = Where do you live?
+location.heading = Where do you live?
+location.england = England
+location.scotland = Scotland
+location.checkYourAnswersLabel = Where do you live?
+location.error.required = Select location
+
+yourDetails.title = yourDetails
+yourDetails.heading = yourDetails
+yourDetails.field1 = Field 1
+yourDetails.field2 = Field 2
+yourDetails.checkYourAnswersLabel = yourDetails
+yourDetails.error.field1.required = Enter field1
+yourDetails.error.field2.required = Enter field2
+yourDetails.error.field1.length = field1 must be 100 characters or less
+yourDetails.error.field2.length = field2 must be 100 characters or less

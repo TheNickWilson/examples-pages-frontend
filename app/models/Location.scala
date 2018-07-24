@@ -25,9 +25,11 @@ object Location {
 
   case object England extends WithName("england") with Location
   case object Scotland extends WithName("scotland") with Location
+  case object Wales extends WithName("wales") with Location
+  case object NorthernIreland extends WithName("northernIreland") with Location
 
   val values: Set[Location] = Set(
-    England, Scotland
+    England, Scotland, Wales, NorthernIreland
   )
 
   val options: Set[RadioOption] = values.map {
@@ -44,9 +46,11 @@ object Location {
 
   implicit object LocationReads extends Reads[Location] {
     override def reads(json: JsValue): JsResult[Location] = json match {
-      case JsString(England.toString) => JsSuccess(England)
-      case JsString(Scotland.toString) => JsSuccess(Scotland)
-      case _                          => JsError("Unknown location")
+      case JsString(England.toString)         => JsSuccess(England)
+      case JsString(Scotland.toString)        => JsSuccess(Scotland)
+      case JsString(Wales.toString)           => JsSuccess(Wales)
+      case JsString(NorthernIreland.toString) => JsSuccess(NorthernIreland)
+      case _                                  => JsError("Unknown location")
     }
   }
 }

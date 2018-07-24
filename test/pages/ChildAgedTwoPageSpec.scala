@@ -40,7 +40,7 @@ class ChildAgedTwoPageSpec extends PageBehaviours with Generators {
 
     "in Normal mode" must {
 
-      "go to the Index page" in {
+      "go to the ChildAgedThreeOrFour page" in {
 
         val gen = for {
           cacheMap <- arbitrary[CacheMap]
@@ -51,7 +51,7 @@ class ChildAgedTwoPageSpec extends PageBehaviours with Generators {
           case (cacheMap, original) =>
 
             val result = ChildAgedTwoPage.nextPage(NormalMode, UserAnswers(cacheMap), original)
-            result mustEqual routes.IndexController.onPageLoad()
+            result mustEqual routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
         }
       }
     }

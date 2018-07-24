@@ -17,6 +17,7 @@
 package pages
 
 import controllers.routes
+import models.NormalMode
 import play.api.mvc.Call
 import utils.UserAnswers
 
@@ -25,5 +26,5 @@ case object ChildAgedTwoPage extends QuestionPage[Boolean] with DefaultCheckMode
   override def toString: String = "childAgedTwo"
 
   override def normalModeRoute(answers: UserAnswers): Call =
-    routes.IndexController.onPageLoad()
+    routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
 }

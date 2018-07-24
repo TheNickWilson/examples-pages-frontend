@@ -47,21 +47,7 @@ class MongoCacheConnectorSpec
 
       val mongoCacheConnector = new MongoCacheConnector(mockSessionRepository)
 
-      val gen = for {
-        cacheId <- nonEmptyString
-        otherData <- Gen.mapOf(
-          for {
-            key <- Gen.alphaNumStr
-            value <- Gen.oneOf(
-              nonEmptyString.map(JsString),
-              Gen.choose(0, Int.MaxValue).map(JsNumber(_)),
-              arbitrary[Boolean].map(JsBoolean)
-            )
-          } yield (key, value)
-        )
-      } yield new CacheMap(cacheId, otherData)
-
-      forAll(gen) {
+      forAll(arbitrary[CacheMap]) {
         cacheMap =>
 
           val result = mongoCacheConnector.save(cacheMap)
@@ -115,21 +101,7 @@ class MongoCacheConnectorSpec
 
         val mongoCacheConnector = new MongoCacheConnector(mockSessionRepository)
 
-        val gen = for {
-          cacheId <- nonEmptyString
-          otherData <- Gen.mapOf(
-            for {
-              key <- Gen.alphaNumStr
-              value <- Gen.oneOf(
-                nonEmptyString.map(JsString),
-                Gen.choose(0, Int.MaxValue).map(JsNumber(_)),
-                arbitrary[Boolean].map(JsBoolean)
-              )
-            } yield (key, value)
-          )
-        } yield new CacheMap(cacheId, otherData)
-
-        forAll(gen) {
+        forAll(arbitrary[CacheMap]) {
           cacheMap =>
 
             when(mockReactiveMongoRepository.get(eqTo(cacheMap.id))) thenReturn Future(Some(cacheMap))
@@ -186,19 +158,9 @@ class MongoCacheConnectorSpec
         val mongoCacheConnector = new MongoCacheConnector(mockSessionRepository)
 
         val gen = for {
-          cacheId   <- nonEmptyString
-          key       <- nonEmptyString
-          otherData <- Gen.mapOf(
-            for {
-              k <- Gen.alphaNumStr suchThat (_ != key)
-              v <- Gen.oneOf(
-                nonEmptyString.map(JsString),
-                Gen.choose(0, Int.MaxValue).map(JsNumber(_)),
-                arbitrary[Boolean].map(JsBoolean)
-              )
-            } yield (k, v)
-          )
-        } yield (key, new CacheMap(cacheId, otherData))
+          key      <- nonEmptyString
+          cacheMap <- arbitrary[CacheMap]
+        } yield (key, cacheMap copy (data = cacheMap.data - key))
 
         forAll(gen) {
           case (key, cacheMap) =>
@@ -228,20 +190,10 @@ class MongoCacheConnectorSpec
         val mongoCacheConnector = new MongoCacheConnector(mockSessionRepository)
 
         val gen = for {
-          cacheId   <- nonEmptyString
-          key       <- nonEmptyString
-          value     <- nonEmptyString
-          otherData <- Gen.mapOf(
-            for {
-              k <- Gen.alphaNumStr suchThat (_ != key)
-              v <- Gen.oneOf(
-                nonEmptyString.map(JsString),
-                Gen.choose(0, Int.MaxValue).map(JsNumber(_)),
-                arbitrary[Boolean].map(JsBoolean)
-              )
-            } yield (k, v)
-          )
-        } yield (key, value, new CacheMap(cacheId, otherData + (key -> JsString(value))))
+          key      <- nonEmptyString
+          value    <- nonEmptyString
+          cacheMap <- arbitrary[CacheMap]
+        } yield (key, value, cacheMap copy (data = cacheMap.data + (key -> JsString(value))))
 
         forAll(gen) {
           case (key, value, cacheMap) =>

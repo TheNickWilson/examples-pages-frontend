@@ -26,5 +26,5 @@ case object YourDetailsPage extends QuestionPage[YourDetails] with DefaultCheckM
   override def toString: String = "yourDetails"
 
   override def normalModeRoute(answers: UserAnswers): Call =
-    routes.IndexController.onPageLoad()
+    routes.CheckYourAnswersController.onPageLoad()
 }

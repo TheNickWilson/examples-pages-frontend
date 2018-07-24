@@ -21,12 +21,12 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
-import pages.QuestionPage
+import pages.{QuestionPage, UserAnswersUniformities}
 import play.api.libs.json._
 import uk.gov.hmrc.http.cache.client.CacheMap
 import utils.UserAnswers
 
-trait PageBehaviours extends WordSpec with MustMatchers with PropertyChecks with Generators with OptionValues {
+trait PageBehaviours extends WordSpec with MustMatchers with PropertyChecks with Generators with OptionValues with UserAnswersUniformities {
 
   class BeRetrievable[A] {
     def apply[P <: QuestionPage[A]](genP: Gen[P])(implicit ev1: Arbitrary[A], ev2: Format[A]): Unit = {

@@ -17,7 +17,6 @@
 package controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -27,7 +26,7 @@ import config.FrontendAppConfig
 import forms.LocationFormProvider
 import pages.LocationPage
 import models.Mode
-import utils.{Enumerable, Navigator}
+import utils.{Enumerable, Navigator, UserAnswers}
 import views.html.location
 
 import scala.concurrent.Future
@@ -39,16 +38,15 @@ class LocationController @Inject()(
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
                                         formProvider: LocationFormProvider
                                       ) extends FrontendController with I18nSupport with Enumerable.Implicits {
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode) = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode) = (identify andThen getData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(LocationPage) match {
+      val preparedForm = request.userAnswers.flatMap(_.get(LocationPage)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -56,18 +54,18 @@ class LocationController @Inject()(
       Ok(location(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode) = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode) = (identify andThen getData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(location(appConfig, formWithErrors, mode))),
         (value) => {
-          val updatedAnswers = request.userAnswers.set(LocationPage, value)
+          val updatedAnswers = request.userAnswers.getOrElse(UserAnswers(request.internalId)).set(LocationPage, value)
 
           dataCacheConnector.save(updatedAnswers.cacheMap).map(
             _ =>
-              Redirect(navigator.nextPage(LocationPage, mode, updatedAnswers, request.userAnswers.get(LocationPage)))
+              Redirect(navigator.nextPage(LocationPage, mode, updatedAnswers, request.userAnswers.flatMap(_.get(LocationPage))))
           )
         }
       )
